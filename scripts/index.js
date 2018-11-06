@@ -1,5 +1,5 @@
 'use strict';
-/* eslint-env jquery*/
+/*eslint-env jquery*/
 
 const API_KEY = 'AIzaSyDpD8nlDRtD461IUxVopKpm7eEd-utJ6qw';
 
@@ -32,11 +32,27 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 /**
  * @function fetchVideos
- * Async function, responsible for calling the Youtube API with jQuery, constructing
- * the correct query object, and passing along the callback into the AJAX call.
- * @param {string}   searchTerm
- * @param {function} callback
- */
+ // Async function, responsible for calling the Youtube API with jQuery, constructing
+ //the correct query object, and passing along the callback into the AJAX call.*/
+const fetchVideos = function(searchTerm, callback) {
+  const query = {
+    q: searchTerm,
+    key: API_KEY,
+    part: 'snippet'
+    // per_page: 5
+  };
+
+  $.getJSON(BASE_URL, query, callback);
+  //console.log('test ran');
+};
+fetchVideos('cat', function(response) {
+  //the callback receives an API 'response'
+  console.log(response);
+});
+
+//  * @param {string}   searchTerm
+//  * @param {function} callback
+//  */
 // TASK:
 // 1. Use `searchTerm` to construct the right query object based on the Youtube API docs
 //    - Refer to curriculum assignment for help with the required parameters
@@ -44,18 +60,6 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 //    as the last argument
 //
 // TEST IT! Execute this function and console log the results inside the callback.
-
-const fetchVideos = function(searchTerm, callback) {
-  const query = {
-    q: searchTerm,
-    key: API_KEY,
-    part: 'snippet',
-    per_page: 5
-  };
-
-  $.getJSON(BASE_URL, query, callback);
-  //console.log('test ran');
-};
 
 /**
  * @function decorateResponse
@@ -73,12 +77,15 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-  const results = response.store.map(item =>{
-    item.findById(item.id === this.id);
-    console.log('this is decorateResponse');
+  response.items.map(item => {
+    return {
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnail.default.url
+    };
   });
 };
-decorateResponse('cat');
+// const decorateObject = decorateResponse('MOCK');
 
 /**
  * @function generateVideoItemHtml
@@ -89,7 +96,12 @@ decorateResponse('cat');
 // TASK:
 // 1. Using the decorated object, return an HTML string containing all the expected
 // TEST IT!
-const generateVideoItemHtml = function(video) {};
+const generateVideoItemHtml = function(video) {
+  return `<li data-video-id="${video.id}">
+   <h3>${video.title} </h3>
+   <img src="${video.thumbnail}"/>
+  </li> `;
+};
 
 /**
  * @function addVideosToStore
@@ -99,7 +111,9 @@ const generateVideoItemHtml = function(video) {};
 // TASK:
 // 1. Set the received array as the value held in store.videos
 // TEST IT!
-const addVideosToStore = function(videos) {};
+const addVideosToStore = function(videos) {
+  store.videos = videos;
+};
 
 /**
  * @function render
@@ -109,7 +123,16 @@ const addVideosToStore = function(videos) {};
 // 1. Map through `store.videos`, sending each `video` through `generateVideoItemHtml`
 // 2. Add this array of DOM elements to the appropriate DOM element
 // TEST IT!
-const render = function() {};
+const render = function() {
+  const html = store.videos.map(obj => generateVideoItemHtml(obj).join(''));
+  $('.results').html(html);
+};
+
+fetchVideos('dogs', response => {
+  const decorated = decorateResponse(response);
+  addVideosToStore(decorated);
+  render();
+});
 
 /**
  * @function handleFormSubmit
@@ -127,10 +150,10 @@ const render = function() {};
 //      `addVideosToStore` function
 //   g) Inside the callback, run the `render` function
 // TEST IT!
-const handleFormSubmit = function() {};
+// const handleFormSubmit = function() {};
 
 // When DOM is ready:
-$(function() {
-  // TASK:
-  // 1. Run `handleFormSubmit` to bind the event listener to the DOM
-});
+// $(function() {
+// TASK:
+// 1. Run `handleFormSubmit` to bind the event listener to the DOM
+// });
