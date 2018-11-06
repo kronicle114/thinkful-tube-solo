@@ -18,9 +18,11 @@ const API_KEY = 'AIzaSyDpD8nlDRtD461IUxVopKpm7eEd-utJ6qw';
 */
 const store = {
   videos: [
-    id,
-    title,
-    thumbnail
+    {
+      id: '98ds8fbsdy67',
+      title: 'Cats dancing the Macarena',
+      thumbnail: 'https://img.youtube.com/some/thumbnail.jpg'
+    }
   ]
 };
 
@@ -49,11 +51,12 @@ const fetchVideos = function(searchTerm, callback) {
     key: API_KEY,
     part: 'snippet',
     per_page: 5
-  }
+  };
 
   $.getJSON(BASE_URL, query, callback);
-  //console.log(callback);
+  //console.log('test ran');
 };
+
 
 /**
  * @function decorateResponse
