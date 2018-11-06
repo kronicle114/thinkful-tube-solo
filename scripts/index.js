@@ -40,7 +40,7 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 // TASK:
 // 1. Use `searchTerm` to construct the right query object based on the Youtube API docs
 //    - Refer to curriculum assignment for help with the required parameters
-// 2. Make a getJSON call using the query object and sending the provided callback in 
+// 2. Make a getJSON call using the query object and sending the provided callback in
 //    as the last argument
 //
 // TEST IT! Execute this function and console log the results inside the callback.
@@ -57,38 +57,39 @@ const fetchVideos = function(searchTerm, callback) {
   //console.log('test ran');
 };
 
-
 /**
  * @function decorateResponse
- * Uses Youtube API response to create an array of "decorated" video objects as 
+ * Uses Youtube API response to create an array of "decorated" video objects as
  * defined at the top of the file.
  * @param   {object} response - should match Youtube API response shape
  * @returns {array}
  */
 // TASK:
 // 1. Map through the response object's `items` array
-// 2. Return an array of objects, where each object contains the keys `id`, `title`, 
-//    `thumbnail` which each hold the appropriate values from the API item object. You 
+// 2. Return an array of objects, where each object contains the keys `id`, `title`,
+//    `thumbnail` which each hold the appropriate values from the API item object. You
 //    WILL have to dig into several nested properties!
 //
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-
+  const results = response.map(item =>{
+    item.findById(item.id === this.id);
+    console.log('this is decorateResponse');
+  });
 };
+decorateResponse('cat');
 
 /**
  * @function generateVideoItemHtml
  * Template function, creates an HTML string from a single decorated video object
  * @param   {object} video - decorated video object
- * @returns {string} HTML 
+ * @returns {string} HTML
  */
 // TASK:
 // 1. Using the decorated object, return an HTML string containing all the expected
 // TEST IT!
-const generateVideoItemHtml = function(video) {
-
-};
+const generateVideoItemHtml = function(video) {};
 
 /**
  * @function addVideosToStore
@@ -98,10 +99,7 @@ const generateVideoItemHtml = function(video) {
 // TASK:
 // 1. Set the received array as the value held in store.videos
 // TEST IT!
-const addVideosToStore = function(videos) {
-
-};
-
+const addVideosToStore = function(videos) {};
 
 /**
  * @function render
@@ -111,9 +109,7 @@ const addVideosToStore = function(videos) {
 // 1. Map through `store.videos`, sending each `video` through `generateVideoItemHtml`
 // 2. Add this array of DOM elements to the appropriate DOM element
 // TEST IT!
-const render = function() {
-
-};
+const render = function() {};
 
 /**
  * @function handleFormSubmit
@@ -127,16 +123,14 @@ const render = function() {
 //   c) Clear the search input field
 //   d) Invoke the `fetchVideos` function, sending in the search value
 //   e) Inside the callback, send the API response through the `decorateResponse` function
-//   f) Inside the callback, add the decorated response into your store using the 
+//   f) Inside the callback, add the decorated response into your store using the
 //      `addVideosToStore` function
-//   g) Inside the callback, run the `render` function 
+//   g) Inside the callback, run the `render` function
 // TEST IT!
-const handleFormSubmit = function() {
-
-};
+const handleFormSubmit = function() {};
 
 // When DOM is ready:
-$(function () {
+$(function() {
   // TASK:
   // 1. Run `handleFormSubmit` to bind the event listener to the DOM
 });
