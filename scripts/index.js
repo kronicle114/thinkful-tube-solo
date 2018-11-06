@@ -1,3 +1,6 @@
+'use strict';
+/* eslint-env jquery*/
+
 const API_KEY = 'YOUR_KEY_HERE';
 
 /*
@@ -14,12 +17,18 @@ const API_KEY = 'YOUR_KEY_HERE';
   }
 */
 const store = {
-  videos: []
+  videos: [
+    id: '',
+    title: '',
+    thumbnail: ''
+  ]
 };
 
 // TASK: Add the Youtube Search API Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
-const BASE_URL = '';
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+const API_KEY = 'AIzaSyDpD8nlDRtD461IUxVopKpm7eEd-utJ6qw';
+
 
 /**
  * @function fetchVideos
@@ -35,8 +44,17 @@ const BASE_URL = '';
 //    as the last argument
 //
 // TEST IT! Execute this function and console log the results inside the callback.
-const fetchVideos = function(searchTerm, callback) {
 
+const fetchVideos = function(searchTerm, callback) {
+  const query = {
+    q: searchTerm,
+    key: API_KEY,
+    part: 'snippet',
+    per_page: 5
+  }
+
+  $.getJSON(BASE_URL, query, callback);
+  //console.log(callback);
 };
 
 /**
