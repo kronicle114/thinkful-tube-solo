@@ -5,26 +5,25 @@ const API_KEY = 'AIzaSyDpD8nlDRtD461IUxVopKpm7eEd-utJ6qw';
 
 /*
   We want our store to hold an array of "decorated" video objects - i.e. objects that
-  have been transformed into ONLY the necessary data we're displaying on our page. 
+  have been transformed into ONLY the necessary data we're displaying on our page.
   (Removes extraneous dataset from Youtube.)
-  
+
   Example decorated video object:
-  
+
   {
     id: '98ds8fbsdy67',
     title: 'Cats dancing the Macarena',
     thumbnail: 'https://img.youtube.com/some/thumbnail.jpg'
   }
 */
+
+// you want a new array with an object that has the as-needed items from the YouTube API. The API response has a lot more properties than what we need for our app
 const store = {
-  videos: [
-    {
-      id: '98ds8fbsdy67',
-      title: 'Cats dancing the Macarena',
-      thumbnail: 'https://img.youtube.com/some/thumbnail.jpg'
-    }
-  ]
+  videos: []
 };
+
+//const MOCK = {object from API}
+
 
 // TASK: Add the Youtube Search API Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
@@ -46,16 +45,19 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 // TEST IT! Execute this function and console log the results inside the callback.
 
 const fetchVideos = function(searchTerm, callback) {
-  const query = {
+  const query = { // you get the query key/values from YouTube API's parameters
     q: searchTerm,
     key: API_KEY,
-    part: 'snippet',
-    per_page: 5
+    part: 'snippet', //this is actually specified on YouTube API website
+    //per_page: 5
   };
 
   $.getJSON(BASE_URL, query, callback);
   //console.log('test ran');
 };
+
+//this will give you a RAW data that the YouTube API returns
+//fetchVideos('cats', (response) => {console.log(response);});
 
 /**
  * @function decorateResponse
@@ -72,13 +74,19 @@ const fetchVideos = function(searchTerm, callback) {
 //
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
+
 const decorateResponse = function(response) {
-  const results = response.store.map(item =>{
-    item.findById(item.id === this.id);
-    console.log('this is decorateResponse');
+  const results = response.items.map(item =>{
+    return {
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnails.default.url
+    };
+    //console.log('this is decorateResponse');
   });
+  return results;
 };
-decorateResponse('cat');
+//console.log(decorateResponse(MOCK));
 
 /**
  * @function generateVideoItemHtml
@@ -89,7 +97,16 @@ decorateResponse('cat');
 // TASK:
 // 1. Using the decorated object, return an HTML string containing all the expected
 // TEST IT!
-const generateVideoItemHtml = function(video) {};
+const generateVideoItemHtml = function(video) {
+  return `
+    <li data-video-id="${video.id}">
+      <img src="${video.thumbnail}" />
+      <h3>${video.title}</h3>
+    </li>`;
+};
+
+//const decoratedObjects = decorateResponse(MOCK);
+//console.log((generateVideoItemHtml(decoratedObjects[0]));
 
 /**
  * @function addVideosToStore
@@ -99,7 +116,10 @@ const generateVideoItemHtml = function(video) {};
 // TASK:
 // 1. Set the received array as the value held in store.videos
 // TEST IT!
-const addVideosToStore = function(videos) {};
+const addVideosToStore = function(videos) {
+  //console.log(videos);
+  store.videos = videos;
+};
 
 /**
  * @function render
@@ -109,7 +129,25 @@ const addVideosToStore = function(videos) {};
 // 1. Map through `store.videos`, sending each `video` through `generateVideoItemHtml`
 // 2. Add this array of DOM elements to the appropriate DOM element
 // TEST IT!
-const render = function() {};
+
+const render = function() {
+  console.log(store);
+  const html = store.videos.map(video => {
+    return generateVideoItemHtml(video);
+  });
+  console.log(html);
+  $('.results').html(html);
+};
+
+/*this is a test*/
+// fetchVideos('dogs', (response) => {
+//   const decorated = decorateResponse(response);
+//   console.log(decorated);
+//   addVideosToStore(decorated);
+//   render();
+// });
+
+
 
 /**
  * @function handleFormSubmit
