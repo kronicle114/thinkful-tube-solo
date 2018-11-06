@@ -24,7 +24,6 @@ const store = {
 
 //const MOCK = {object from API}
 
-
 // TASK: Add the Youtube Search API Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
 const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -34,10 +33,11 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
  // Async function, responsible for calling the Youtube API with jQuery, constructing
  //the correct query object, and passing along the callback into the AJAX call.*/
 const fetchVideos = function(searchTerm, callback) {
-  const query = { // you get the query key/values from YouTube API's parameters
+  const query = {
+    // you get the query key/values from YouTube API's parameters
     q: searchTerm,
     key: API_KEY,
-    part: 'snippet', //this is actually specified on YouTube API website
+    part: 'snippet' //this is actually specified on YouTube API website
     //per_page: 5
   };
 
@@ -80,7 +80,7 @@ fetchVideos('cat', function(response) {
 // you get back the object you want.
 
 const decorateResponse = function(response) {
-  const results = response.items.map(item =>{
+  const results = response.items.map(item => {
     return {
       id: item.id.videoId,
       title: item.snippet.title,
@@ -150,8 +150,6 @@ const render = function() {
 //   render();
 // });
 
-
-
 /**
  * @function handleFormSubmit
  * Adds form "submit" event listener that 1) initiates API call, 2) modifies store,
@@ -168,10 +166,28 @@ const render = function() {
 //      `addVideosToStore` function
 //   g) Inside the callback, run the `render` function
 // TEST IT!
-// const handleFormSubmit = function() {};
+const handleFormSubmit = function() {
+  $('form').submit(event => {
+    //do we need 'input'??
+    event.preventDefault();
+    const queryTarget = $(event.currentTarget).find('#search-term');
+    const query = queryTarget.val();
+    // console.log('this is query',query);
+    queryTarget.val('');
+    console.log('this is queryTarget', queryTarget);
+    fetchVideos(query, response => {
+      let addVideos = decorateResponse(response);
+      addVideosToStore(addVideos);
+      console.log('this is addVideos',addVideos);
+      render();
+    });
+  });
+};
+
+handleFormSubmit();
 
 // When DOM is ready:
-// $(function() {
-// TASK:
-// 1. Run `handleFormSubmit` to bind the event listener to the DOM
-// });
+$(function() {
+  // TASK:
+  // 1. Run `handleFormSubmit` to bind the event listener to the DOM
+});
