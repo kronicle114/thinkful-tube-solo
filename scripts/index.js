@@ -73,7 +73,7 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-  const results = response.map(item =>{
+  const results = response.store.map(item =>{
     item.findById(item.id === this.id);
     console.log('this is decorateResponse');
   });
