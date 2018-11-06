@@ -1,5 +1,5 @@
 'use strict';
-/* eslint-env jquery*/
+/*eslint-env jquery*/
 
 const API_KEY = 'AIzaSyDpD8nlDRtD461IUxVopKpm7eEd-utJ6qw';
 
@@ -31,19 +31,8 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 /**
  * @function fetchVideos
- * Async function, responsible for calling the Youtube API with jQuery, constructing
- * the correct query object, and passing along the callback into the AJAX call.
- * @param {string}   searchTerm
- * @param {function} callback
- */
-// TASK:
-// 1. Use `searchTerm` to construct the right query object based on the Youtube API docs
-//    - Refer to curriculum assignment for help with the required parameters
-// 2. Make a getJSON call using the query object and sending the provided callback in
-//    as the last argument
-//
-// TEST IT! Execute this function and console log the results inside the callback.
-
+ // Async function, responsible for calling the Youtube API with jQuery, constructing
+ //the correct query object, and passing along the callback into the AJAX call.*/
 const fetchVideos = function(searchTerm, callback) {
   const query = { // you get the query key/values from YouTube API's parameters
     q: searchTerm,
@@ -55,6 +44,21 @@ const fetchVideos = function(searchTerm, callback) {
   $.getJSON(BASE_URL, query, callback);
   //console.log('test ran');
 };
+fetchVideos('cat', function(response) {
+  //the callback receives an API 'response'
+  console.log(response);
+});
+
+//  * @param {string}   searchTerm
+//  * @param {function} callback
+//  */
+// TASK:
+// 1. Use `searchTerm` to construct the right query object based on the Youtube API docs
+//    - Refer to curriculum assignment for help with the required parameters
+// 2. Make a getJSON call using the query object and sending the provided callback in
+//    as the last argument
+//
+// TEST IT! Execute this function and console log the results inside the callback.
 
 //this will give you a RAW data that the YouTube API returns
 //fetchVideos('cats', (response) => {console.log(response);});
@@ -117,7 +121,6 @@ const generateVideoItemHtml = function(video) {
 // 1. Set the received array as the value held in store.videos
 // TEST IT!
 const addVideosToStore = function(videos) {
-  //console.log(videos);
   store.videos = videos;
 };
 
@@ -165,10 +168,10 @@ const render = function() {
 //      `addVideosToStore` function
 //   g) Inside the callback, run the `render` function
 // TEST IT!
-const handleFormSubmit = function() {};
+// const handleFormSubmit = function() {};
 
 // When DOM is ready:
-$(function() {
-  // TASK:
-  // 1. Run `handleFormSubmit` to bind the event listener to the DOM
-});
+// $(function() {
+// TASK:
+// 1. Run `handleFormSubmit` to bind the event listener to the DOM
+// });
