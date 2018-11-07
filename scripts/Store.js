@@ -1,14 +1,13 @@
 'use strict';
 /*eslint-env jquery*/
 
-
+// eslint-disable-next-line no-unused-vars
 const Store = (function(){
 
   const videos = {
     videos: []
   };
 
-//set Store.videos =
   const setVideos = function(response){
     const results = response.items.map(item => {
       return {
@@ -21,7 +20,7 @@ const Store = (function(){
     this.videos = results;
   };
 
-  // return something
+
   return {
     videos,
     setVideos

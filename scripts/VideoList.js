@@ -2,13 +2,14 @@
 /*eslint-env jquery*/
 /* global Api, Store*/
 
+// eslint-disable-next-line no-unused-vars
 const VideoList = (function(){
 
   const generateListItem = function(video) {
     return `
       <li data-video-id="${video.id}">
-        <img src="${video.thumbnail}" />
         <h3>${video.title}</h3>
+        <img class="img-thumbnail" src="${video.thumbnail}" />
       </li>`;
   };
   const render = function() {
@@ -23,7 +24,6 @@ const VideoList = (function(){
   const handleFormSubmit = function() {
     console.log('handleFormSubmit fired');
     $('form').submit(event => {
-      //do we need 'input'??
       event.preventDefault();
       const queryTarget = $(event.currentTarget).find('#search-term');
       const query = queryTarget.val();
@@ -31,9 +31,7 @@ const VideoList = (function(){
       queryTarget.val('');
       //console.log('this is queryTarget', queryTarget);
       Api.fetchVideos(query, response => {
-        let addVideos = Store.setVideos(response);
-        console.log('this is a test', addVideos)
-        //Store.setVideos(addVideos));
+        Store.setVideos(response);
         //console.log('this is addVideos',addVideos);
         render();
       });
@@ -44,7 +42,6 @@ const VideoList = (function(){
     handleFormSubmit();
   };
 
-  //return something
   return {
     generateListItem,
     bindEventListeners,
